@@ -1,12 +1,12 @@
-# Miscellaneous small python scripts
+# useful python scripts
 
 I have these python scripts in my PATH variable which I use frequently on a daily basis.
 
-**syn** gives synonyms to a given word
+**syn** gives you synonyms to a given word
 
 ## Installation
 
-You can just download/clone it and use it.
+You can just download/clone and use it.
 Some scripts need additional dependencies. See list below.
 
 * syn: lxml, requests
@@ -14,8 +14,11 @@ Some scripts need additional dependencies. See list below.
 ## Usage
 
 For the syn script I parse the output of http://synonyme.woxikon.de/
+
 		syn word
+		
 Example
+
 		syn gehen
 Output
 ```
