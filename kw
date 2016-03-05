@@ -1,0 +1,7 @@
+#!/usr/bin/python
+import datetime
+
+now = datetime.datetime.now()
+week = datetime.date(now.year, now.month, now.day).isocalendar()[1]
+
+print("current calendar week: " + str(week))
