@@ -2,6 +2,8 @@
 
 I have these python scripts in my PATH variable which I use frequently on a daily basis.
 
+**syn** gives synonyms to a given word
+
 ## Installation
 
 You can just download/clone it and use it.
@@ -12,15 +14,10 @@ Some scripts need additional dependencies. See list below.
 ## Usage
 
 For the syn script I parse the output of http://synonyme.woxikon.de/
-
 		syn word
-
 Example
-
 		syn gehen
-
 Output
-
 ```
 	fortgehen
 	abgehen
@@ -32,7 +29,6 @@ Output
 	aufgeben
 	...
 ```
-
 ## License
 
 Copyright (C) 2016 Leo Zulfiu
