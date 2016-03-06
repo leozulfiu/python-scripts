@@ -4,15 +4,19 @@ I have these python scripts in my PATH variable which I use frequently on a dail
 
 **syn** gives you synonyms to a given word
 
+**kw** gives you the current calendar week
+
 ## Installation
 
 You can just download/clone and use it.
 Some scripts need additional dependencies. See list below.
 
 * syn: lxml, requests
+* kw: datetime
 
 ## Usage
 
+### syn
 For the syn script I parse the output of http://synonyme.woxikon.de/
 
 		syn word
@@ -32,6 +36,14 @@ Output
 	aufgeben
 	...
 ```
+### kw
+
+use without any arguments
+
+Output
+
+		current calendar week: 9
+
 ## License
 
 Copyright (C) 2016 Leo Zulfiu
