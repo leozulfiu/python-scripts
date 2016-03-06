@@ -1,0 +1,40 @@
+#!/usr/bin/python
+import requests
+import sys
+import json
+from dateutil.parser import parse
+from prettytable import PrettyTable
+import datetime
+
+arguments = sys.argv
+studentName = "zulfileo"
+daysToAdd = 0
+
+argSize = len(arguments)
+if argSize == 2:
+    daysToAdd = arguments[1]
+
+
+url = 'https://api.apps.engineering.zhaw.ch/v1/schedules/students/' + studentName
+dateNow = datetime.datetime.now()
+wantedDay = dateNow.day + int(daysToAdd)
+wantedDate = datetime.date(dateNow.year, dateNow.month, wantedDay)
+
+dateString = wantedDate.strftime('%Y-%m-%d')
+
+params = {'days': 1, 'startingAt': dateString}
+headers = {'Accept': 'application/json',
+           'user-agent': 'student/stundenplan (https://crap.com)'}
+response = requests.get(url, params=params, headers=headers)
+
+jsonResponse = json.loads(response.text)
+events = jsonResponse['days'][0]['events']
+
+table = PrettyTable(["Start", "End", "Course", "Room"])
+for event in events:
+    startTime = parse(event["startTime"]).strftime('%H:%M')
+    endTime = parse(event["endTime"]).strftime('%H:%M')
+    course = event["name"]
+    room = event["eventRealizations"][0]["room"]["name"]
+    table.add_row([startTime, endTime, course, room])
+print table
