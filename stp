@@ -14,7 +14,6 @@ argSize = len(arguments)
 if argSize == 2:
     daysToAdd = arguments[1]
 
-
 url = 'https://api.apps.engineering.zhaw.ch/v1/schedules/students/' + studentName
 dateNow = datetime.datetime.now()
 wantedDay = dateNow.day + int(daysToAdd)
