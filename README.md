@@ -1,6 +1,6 @@
 # useful python scripts
 
-I have these python scripts in my PATH variable which I use frequently on a daily basis.
+I have these python scripts in my PATH variable which I use on a daily basis.
 
 **syn** gives you synonyms to a given word
 
