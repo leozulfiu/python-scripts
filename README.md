@@ -8,6 +8,10 @@ I have these python scripts in my PATH variable which I use on a daily basis.
 
 **stp** gives you your timetable for the zhaw (only school of engineering)
 
+**de** translates a german word to english
+
+**en** translates an english word to german
+
 ## Installation
 
 You can just download/clone and use it.
@@ -16,17 +20,19 @@ Some scripts need additional dependencies. See list below.
 * syn: lxml, requests
 * kw: datetime
 * stp: datetime, prettytable, requests, json
+* ed/de: requests
 
 ## Usage
 
 ### syn
-For the syn script I parse the output of http://synonyme.woxikon.de/
+The syn script parses the output from [woxikon.de](http://synonyme.woxikon.de/)
 
-		syn word
+`syn word`
 		
 Example
 
-		syn gehen
+`syn gehen`
+
 Output
 ```
 	fortgehen
@@ -45,11 +51,11 @@ use without any arguments
 
 Output
 
-		current calendar week: 9
+`current calendar week: 9`
 
 ### stp
 
-Usage: stp [days adding to current date]
+Usage: `stp [days adding to current date]`
 
 Output
 
@@ -63,6 +69,14 @@ Output
 +-------+-------+---------+--------+
 
 ```
+
+### ed/de
+
+It uses the API from [Yandex.Translate](https://translate.yandex.com/)
+
+Usage: `ed ENGLISH-WORD`
+or
+`de GERMAN-WORD`
 
 ## License
 
