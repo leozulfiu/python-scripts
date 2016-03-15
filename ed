@@ -1,0 +1,37 @@
+#!/usr/bin/python
+
+import sys
+import requests
+import requests.exceptions
+
+arguments = sys.argv
+
+englishWord = ""
+url = "https://translate.yandex.net/api/v1.5/tr.json/translate"
+translationDirection = "en-de"
+
+if len(arguments) == 1:
+    exit("usage: ed ENGLISH-WORD")
+elif len(arguments) == 2:
+    englishWord = arguments[1]
+
+data = {
+    "text": englishWord,
+    "lang": translationDirection,
+    "key": "trnsl.1.1.20160315T195419Z.3ed65dac0f5446de.c53b3cd387a69efaecdacffd1066c2f010522c2a"
+}
+
+try:
+    response = requests.post(url, data=data)
+except ConnectionError:
+    exit("host not reachable")
+else:
+    response = response.json()
+
+status_code = response.get("code", 200)
+if status_code != 200:
+    exit("Yandex Error: "+status_code)
+
+print "Results:\n"
+for gerWord in response["text"]:
+    print gerWord+"\n"
