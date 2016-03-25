@@ -1,7 +1,10 @@
 #!/usr/bin/python
 import datetime
 
-now = datetime.datetime.now()
-week = datetime.date(now.year, now.month, now.day).isocalendar()[1]
 
+def get_calendar_week():
+    now = datetime.datetime.now()
+    return datetime.date(now.year, now.month, now.day).isocalendar()[1]
+
+week = get_calendar_week()
 print("current calendar week: " + str(week))
