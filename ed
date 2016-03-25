@@ -4,34 +4,49 @@ import sys
 import requests
 import requests.exceptions
 
-arguments = sys.argv
 
-englishWord = ""
-url = "https://translate.yandex.net/api/v1.5/tr.json/translate"
-translationDirection = "en-de"
+def extract_arguments():
+    english_word = ""
+    arguments = sys.argv
+    if len(arguments) == 1:
+        exit("usage: de ENGLISH-WORD")
+    elif len(arguments) == 2:
+        english_word = arguments[1]
+    return english_word
 
-if len(arguments) == 1:
-    exit("usage: ed ENGLISH-WORD")
-elif len(arguments) == 2:
-    englishWord = arguments[1]
 
-data = {
-    "text": englishWord,
-    "lang": translationDirection,
-    "key": "trnsl.1.1.20160315T195419Z.3ed65dac0f5446de.c53b3cd387a69efaecdacffd1066c2f010522c2a"
-}
+def send_request(english_word):
+    url = "https://translate.yandex.net/api/v1.5/tr.json/translate"
+    translation_direction = "en-de"
+    data = {
+        "text": english_word,
+        "lang": translation_direction,
+        "key": "trnsl.1.1.20160315T195419Z.3ed65dac0f5446de.c53b3cd387a69efaecdacffd1066c2f010522c2a"
+    }
+    response = {"code": 404}
+    try:
+        response = requests.post(url, data=data)
+    except ConnectionError:
+        exit("host not reachable")
+    else:
+        response = response.json()
+    return response
 
-try:
-    response = requests.post(url, data=data)
-except ConnectionError:
-    exit("host not reachable")
-else:
-    response = response.json()
 
-status_code = response.get("code", 200)
-if status_code != 200:
-    exit("Yandex Error: "+status_code)
+def get_translated_words(response):
+    translated_words = []
+    status_code = response.get("code", 200)
+    if status_code != 200:
+        exit("Yandex Error: " + status_code)
+    for eng_word in response["text"]:
+        translated_words.append(eng_word)
+    return translated_words
+
+
+english_word = extract_arguments()
+response = send_request(english_word)
+words = get_translated_words(response)
 
 print "Results:\n"
-for gerWord in response["text"]:
-    print gerWord+"\n"
+for word in words:
+    print word + "\n"

@@ -43,8 +43,8 @@ def get_translated_words(response):
     return translated_words
 
 
-germanWord = extract_arguments()
-response = send_request(germanWord)
+german_word = extract_arguments()
+response = send_request(german_word)
 words = get_translated_words(response)
 
 print "Results:\n"
