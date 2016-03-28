@@ -6,34 +6,58 @@ from dateutil.parser import parse
 from prettytable import PrettyTable
 import datetime
 
-arguments = sys.argv
-studentName = "zulfileo"
-daysToAdd = 0
 
-argSize = len(arguments)
-if argSize == 2:
-    daysToAdd = arguments[1]
+def extract_arguments():
+    arguments = sys.argv
+    student_name = "zulfileo"
+    days_to_add = 0
+    if len(arguments) == 2:
+        days_to_add = arguments[1]
+    return student_name, days_to_add
 
-url = 'https://api.apps.engineering.zhaw.ch/v1/schedules/students/' + studentName
-dateNow = datetime.datetime.now()
-wantedDay = dateNow.day + int(daysToAdd)
-wantedDate = datetime.date(dateNow.year, dateNow.month, wantedDay)
 
-dateString = wantedDate.strftime('%Y-%m-%d')
+def send_request(student_name, days_to_add):
+    url = 'https://api.apps.engineering.zhaw.ch/v1/schedules/students/' + student_name
+    wanted_date = datetime.datetime.now() + datetime.timedelta(days=int(days_to_add))
 
-params = {'days': 1, 'startingAt': dateString}
-headers = {'Accept': 'application/json',
-           'user-agent': 'student/stundenplan (https://crap.com)'}
-response = requests.get(url, params=params, headers=headers)
+    date_string = wanted_date.strftime('%Y-%m-%d')
 
-jsonResponse = json.loads(response.text)
-events = jsonResponse['days'][0]['events']
+    params = {'days': 1, 'startingAt': date_string}
+    headers = {'Accept': 'application/json',
+               'user-agent': 'student/stundenplan (https://crap.com)'}
+    return requests.get(url, params=params, headers=headers)
 
-table = PrettyTable(["Start", "End", "Course", "Room"])
-for event in events:
-    startTime = parse(event["startTime"]).strftime('%H:%M')
-    endTime = parse(event["endTime"]).strftime('%H:%M')
-    course = event["name"]
-    room = event["eventRealizations"][0]["room"]["name"]
-    table.add_row([startTime, endTime, course, room])
-print table
+
+def get_courses(response):
+    courses = []
+    json_response = json.loads(response.text)
+    events = json_response['days'][0]['events']
+    for event in events:
+        course = []
+        course.append(parse(event["startTime"]).strftime('%H:%M'))
+        course.append(parse(event["endTime"]).strftime('%H:%M'))
+        course.append(event["name"])
+        realization = event["eventRealizations"]
+        if realization is not None:
+            course.append(realization[0]["room"]["name"])
+        courses.append(course)
+    return courses
+
+
+def print_courses(courses):
+    table = PrettyTable(["Start", "End", "Course", "Room"])
+    for event in courses:
+        start_time = event[0]
+        end_time = event[1]
+        course = event[2]
+        room = ""
+        if len(event) == 4:
+            room = event[3]
+        table.add_row([start_time, end_time, course, room])
+    print table
+
+
+student_name, days_to_add = extract_arguments()
+response = send_request(student_name, days_to_add)
+found_courses = get_courses(response)
+print_courses(found_courses)
